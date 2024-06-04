@@ -1,12 +1,13 @@
 import mysql.connector
 import PySimpleGUI as pg
-import entry_window
+import table_window
+
 
 def main():
 
     login_layout = [
-        [pg.Text("Username: "), pg.InputText(key = '-USER-')],
-        [pg.Text("Password: "), pg.InputText(key = '-PASS-', password_char = True)],
+        [pg.Text("Username: "), pg.InputText(key='-USER-')],
+        [pg.Text("Password: "), pg.InputText(key='-PASS-', password_char=True)],
         [pg.Button("Login")],
     ]
 
@@ -33,7 +34,7 @@ def main():
 
     mycursor = mydb.cursor()
 
-    entry_window.main(mydb, mycursor)
+    table_window.main(mydb, mycursor)
 
 if __name__=="__main__":
     main()

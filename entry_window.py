@@ -66,7 +66,7 @@ def main(db, cursor):
                           values['-PR_DESC-'],
                           values['-STATUS-'], values['-REQ_DATE_BOX-'], values['-DUE_DATE_BOX-'], values['-COLOR-'],
                           values['-NOTE-'])
-                break
+                entry_window.close()
             except mysql.connector.errors.DataError:
                 pg.popup_error("Date(s) inputted have incorrect format")
             except mysql.connector.errors.DatabaseError:
