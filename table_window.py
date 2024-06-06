@@ -1,24 +1,26 @@
 import mysql.connector
 import PySimpleGUI as pg
 import entry_window
+import update_window
 
 
 def main(db, cursor):
 
-    def update():
+    def update(): # refresh table view to reflect update/new entry
         cursor.execute('SELECT * FROM cur_prints LIMIT 1000')
 
-        results = cursor.fetchall()
+        db_results = cursor.fetchall()
 
         header = ['ID', 'Last', 'First', 'Email', 'Print name', 'Description', 'Status', 'Requested', 'Due', 'Color',
                   'Note']
 
         result_storage = [[]]
 
-        for row in results:
+        for row in db_results:
             result_storage.append(list(row))
         table_window['-TABLE-'].update(result_storage)
 
+    # initialize table
     cursor.execute('SELECT * FROM cur_prints LIMIT 1000')
 
     results = cursor.fetchall()
@@ -46,11 +48,21 @@ def main(db, cursor):
         if event == pg.WINDOW_CLOSED:
             break
 
-        if event == '-ENTRY-':
+        if event == '-ENTRY-': # open entry menu
             entry_window.main(db, cursor)
             update()
 
-        if event == 'View':
+        if event == 'Update':
+            try: # handle update without selecting row
+                row_index = values['-TABLE-']
+                popup_list = result_storage[row_index[0]]
+                update_window.main(db, cursor, popup_list)
+                update()
+            except IndexError:
+                pg.popup_error("Please select a row to update")
+
+
+        if event == 'View': # full expanded view for entry
             row_index = values['-TABLE-']
             for result in result_storage[row_index[0]]:
                 print(result)

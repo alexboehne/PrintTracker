@@ -3,7 +3,7 @@ import PySimpleGUI as pg
 
 def main(db, cursor):
 
-    exec_string = ("INSERT INTO cur_prints (l_name, f_name, email, "
+    add_entry_string = ("INSERT INTO cur_prints (l_name, f_name, email, "
                    "pr_name, pr_description, pr_status, date_requested, date_due,"
                    "color, note) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
 
@@ -43,12 +43,8 @@ def main(db, cursor):
         val_string[8] = color
         val_string[9] = note
 
-        cursor.execute(exec_string, val_string)
+        cursor.execute(add_entry_string, val_string)
         db.commit()
-
-    def db_date_get():
-        pg.popup_get_date()
-
     def reformat_date(year, mon, day):
         return '%s-%s-%s' % (year, mon, day)
 
@@ -66,6 +62,7 @@ def main(db, cursor):
                           values['-PR_DESC-'],
                           values['-STATUS-'], values['-REQ_DATE_BOX-'], values['-DUE_DATE_BOX-'], values['-COLOR-'],
                           values['-NOTE-'])
+                entry_window.close()
                 entry_window.close()
             except mysql.connector.errors.DataError:
                 pg.popup_error("Date(s) inputted have incorrect format")
